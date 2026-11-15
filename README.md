@@ -91,7 +91,7 @@ Reusable fixtures in `conftest.py` handle browser setup and login preparation.
 Clone the repository:
 
 ```bash
-git clone https://github.com/milandahal1000/QA-Ecommerce-Testing.git
+git clone https://github.com/milandahal1000/SauceDemo_QA_Testing_Project.git
 cd qa-ecommerce-testing
 ```
 
