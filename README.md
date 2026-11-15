@@ -68,17 +68,35 @@ qa-ecommerce-testing/
 
 **Latest manual execution:** 16 passed using `standard_user`.
 
-### Automation Testing
+### Automation Test Execution
 
-| Module | Automated Tests |
+The complete Selenium automation suite was executed
+successfully using Pytest.
+
+![Pytest Automation Results](docs/screenshots/pytest-results.png)
+
+**Execution Summary**
+
+| Metric | Result |
 |---|---:|
-| Login | 3 |
-| Inventory | 6 |
-| Shopping Cart | 6 |
-| Checkout | 7 |
-| **Total** | **22** |
+| Total Tests | 22 |
+| Passed | 22 |
+| Failed | 0 |
+| Execution Time | 99.01 seconds |
 
-**Latest automation execution:** 22 passed, 0 failed.
+### HTML Automation Test Report
+
+The automated test execution report is generated using
+pytest-html.
+
+![SauceDemo HTML Test Report](docs/screenshots/html-report.png)
+
+The report includes:
+- Test execution summary
+- Passed and failed test counts
+- Individual test results
+- Execution duration
+- Environment and framework metadata
 
 ## Design Pattern
 
