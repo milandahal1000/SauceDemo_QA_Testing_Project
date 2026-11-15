@@ -41,8 +41,30 @@ class CartPage:
         return int(badges[0].text) if badges else 0
 
     def get_cart_product_names(self):
-        items = self.driver.find_elements(*self.CART_PRODUCT_NAMES)
-        return [item.text for item in items]
+        self.wait.until(
+            EC.url_contains("cart.html")
+        )
+
+        self.wait.until(
+            EC.presence_of_element_located(
+                (By.CLASS_NAME, "cart_list")
+            )
+        )
+
+        self.wait.until(
+            lambda driver: len(
+                driver.find_elements(
+                    By.CLASS_NAME, "inventory_item_name"
+                )
+            ) > 0
+        )
+
+        return [
+            element.text
+            for element in self.driver.find_elements(
+                By.CLASS_NAME, "inventory_item_name"
+            )
+        ]
 
     def get_cart_item_count(self):
         return len(self.driver.find_elements(*self.CART_ITEMS))
