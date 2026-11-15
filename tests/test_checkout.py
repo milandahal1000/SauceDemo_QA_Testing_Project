@@ -8,38 +8,30 @@ from pages.cart_page import CartPage
 from pages.checkout_page import CheckoutPage
 
 
-def prepare_checkout(driver):
-    login = LoginPage(driver)
-    login.open()
-    login.login(VALID_USERNAME, VALID_PASSWORD)
-
-    WebDriverWait(driver, 10).until(
-        EC.url_contains("inventory.html")
-    )
-
-    cart = CartPage(driver)
+def prepare_checkout(logged_in_driver):
+    cart = CartPage(logged_in_driver)
     cart.add_backpack()
     cart.open_cart()
 
-    checkout = CheckoutPage(driver)
+    checkout = CheckoutPage(logged_in_driver)
     checkout.click_checkout()
 
     return checkout
 
 
-def test_checkout_with_valid_information(driver):
-    checkout = prepare_checkout(driver)
+def test_checkout_with_valid_information(logged_in_driver):
+    checkout = prepare_checkout(logged_in_driver)
 
     checkout.enter_customer_information(
         FIRST_NAME, LAST_NAME, POSTAL_CODE
     )
     checkout.click_continue()
 
-    assert "checkout-step-two.html" in driver.current_url
+    assert "checkout-step-two.html" in logged_in_driver.current_url
 
 
-def test_checkout_missing_first_name(driver):
-    checkout = prepare_checkout(driver)
+def test_checkout_missing_first_name(logged_in_driver):
+    checkout = prepare_checkout(logged_in_driver)
 
     checkout.enter_customer_information(
         "", LAST_NAME, POSTAL_CODE
@@ -49,8 +41,8 @@ def test_checkout_missing_first_name(driver):
     assert "First Name is required" in checkout.get_error_message()
 
 
-def test_checkout_missing_last_name(driver):
-    checkout = prepare_checkout(driver)
+def test_checkout_missing_last_name(logged_in_driver):
+    checkout = prepare_checkout(logged_in_driver)
 
     checkout.enter_customer_information(
         FIRST_NAME, "", POSTAL_CODE
@@ -60,8 +52,8 @@ def test_checkout_missing_last_name(driver):
     assert "Last Name is required" in checkout.get_error_message()
 
 
-def test_checkout_missing_postal_code(driver):
-    checkout = prepare_checkout(driver)
+def test_checkout_missing_postal_code(logged_in_driver):
+    checkout = prepare_checkout(logged_in_driver)
 
     checkout.enter_customer_information(
         FIRST_NAME, LAST_NAME, ""
@@ -71,8 +63,8 @@ def test_checkout_missing_postal_code(driver):
     assert "Postal Code is required" in checkout.get_error_message()
 
 
-def test_order_overview_displays_product_and_prices(driver):
-    checkout = prepare_checkout(driver)
+def test_order_overview_displays_product_and_prices(logged_in_driver):
+    checkout = prepare_checkout(logged_in_driver)
 
     checkout.enter_customer_information(
         FIRST_NAME, LAST_NAME, POSTAL_CODE
@@ -85,8 +77,8 @@ def test_order_overview_displays_product_and_prices(driver):
     assert "Total:" in checkout.get_total()
 
 
-def test_complete_order_successfully(driver):
-    checkout = prepare_checkout(driver)
+def test_complete_order_successfully(logged_in_driver):
+    checkout = prepare_checkout(logged_in_driver)
 
     checkout.enter_customer_information(
         FIRST_NAME, LAST_NAME, POSTAL_CODE
@@ -97,10 +89,10 @@ def test_complete_order_successfully(driver):
     assert checkout.get_confirmation_message() == "Thank you for your order!"
 
 
-def test_cancel_checkout_returns_to_cart(driver):
-    checkout = prepare_checkout(driver)
+def test_cancel_checkout_returns_to_cart(logged_in_driver):
+    checkout = prepare_checkout(logged_in_driver)
 
     checkout.click_cancel()
 
-    assert "cart.html" in driver.current_url
+    assert "cart.html" in logged_in_driver.current_url
     assert "Sauce Labs Backpack" in checkout.get_product_names()

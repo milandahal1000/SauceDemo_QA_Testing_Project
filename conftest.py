@@ -5,6 +5,12 @@ import re
 from pathlib import Path
 from selenium import webdriver
 
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+from pages.login_page import LoginPage
+from config.test_data import VALID_USERNAME, VALID_PASSWORD
+
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):
@@ -51,3 +57,17 @@ def driver(request):
 
     time.sleep(3)
     browser.quit()
+
+
+@pytest.fixture
+def logged_in_driver(driver):
+    login = LoginPage(driver)
+
+    login.open()
+    login.login(VALID_USERNAME, VALID_PASSWORD)
+
+    WebDriverWait(driver, 10).until(
+        EC.url_contains("inventory.html")
+    )
+
+    return driver
