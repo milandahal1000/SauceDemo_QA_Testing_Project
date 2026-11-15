@@ -71,3 +71,17 @@ def logged_in_driver(driver):
     )
 
     return driver
+
+
+def pytest_html_report_title(report):
+    report.title = "SauceDemo E-Commerce Automation Test Report"
+
+
+def pytest_metadata(metadata):
+    metadata["Project"] = "SauceDemo E-Commerce QA"
+    metadata["Testing Framework"] = "Pytest"
+    metadata["Automation Tool"] = "Selenium WebDriver"
+    metadata["Programming Language"] = "Python"
+    metadata["Design Pattern"] = "Page Object Model"
+    metadata["Operating System"] = "CachyOS Linux"
+    metadata["Browser"] = "Google Chrome"
